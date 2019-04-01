@@ -51,3 +51,7 @@ app.post('/users', (req, res) => {
                 res.end(`{ "id": ${newUserId}}`);
             });
 });
+
+app.put('/users', (req, res) => {
+    res.end('{ "message": "you wanna update, doncha?"}');
+});
