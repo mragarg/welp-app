@@ -1,3 +1,6 @@
+const express = require('express'); // Bring in the express library
+const app = express(); // Create a new express app.
+
 const http = require('http');
 const querystring = require('querystring');
 
