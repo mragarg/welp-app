@@ -2,11 +2,7 @@ const express = require('express'); // Bring in the express library
 const app = express(); // Create a new express app.
 
 // FOR POST 
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const upload = multer();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true }));
+app.use(express.urlencoded({extended: true }));
 
 const http = require('http');
 const querystring = require('querystring');
@@ -41,27 +37,10 @@ app.get('/users/:id', async (req, res) => {
     res.json(theUser);
 });
 
-app.post('/users', upload.array(), async (req, res, next) => {
-    // let body = '';
-    //         req.on('data', (chunk) => {
-    //             // .toString() is built into most objects
-    //             // it returns a string representation of the object
-    //             body += chunk.toString();
-    //         });
-
-    //         req.on('end', async () => {
-    //             const parsedBody = querystring.parse(body);
-    //             console.log('====================');
-    //             console.log(parsedBody);
-    //             console.log('^^^^^^ BODY OF FORM ^^^^^^^^');
-    //             const newUserId = await User.add(parsedBody);
-    //             res.end(`{ "id": ${newUserId}}`);
-    //         });
-
+app.post('/users', async (req, res) => {
     console.log(req.body);
     res.json(req.body);
-    const newUser = await User.add(req.body); 
-
+    await User.add(req.body); 
 });
 
 app.put('/users', (req, res) => {
