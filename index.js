@@ -44,7 +44,7 @@ app.post('/users', async (req, res) => {
 });
 
 app.put('/users/:id', async (req, res) => {
-    // res.end('{ "message": "you wanna update, doncha?"}');
+    console.log('{ "message": "you wanna update, doncha?"}');
     await User.update(req.params.id, req.body);
     res.end(`{"id": ${req.params.id}}`);
 });
