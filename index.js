@@ -33,3 +33,21 @@ app.get('/users/:id', async (req, res) => {
     const theUser = await User.getById(req.params.id);
     res.json(theUser);
 });
+
+app.post('/users', (req, res) => {
+    let body = '';
+            req.on('data', (chunk) => {
+                // .toString() is built into most objects
+                // it returns a string representation of the object
+                body += chunk.toString();
+            });
+
+            req.on('end', async () => {
+                const parsedBody = querystring.parse(body);
+                console.log('====================');
+                console.log(parsedBody);
+                console.log('^^^^^^ BODY OF FORM ^^^^^^^^');
+                const newUserId = await User.add(parsedBody);
+                res.end(`{ "id": ${newUserId}}`);
+            });
+});
