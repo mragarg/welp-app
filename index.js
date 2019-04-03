@@ -34,7 +34,14 @@ app.get('/login', (req, res) => {
 // When they submit the form, process the form data
 app.post('/login', (req, res) => {
     console.log(req.body);
-    res.send("test");
+    // res.send("test"); 
+    // Assume they typed in correct password
+    res.redirect('/dashboard');
+    // TODO: check password for real
+});
+
+app.get('/dashboard', (req, res) => {
+    res.send('Welcome to your dashboard');
 });
 
 // Handlers 

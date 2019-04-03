@@ -104,6 +104,19 @@ class User {
         return bcrypt.compareSync(aPassword, this.password);
     }
 
+    static getByEMail(email) {
+        return db.one(`select * from users where email=$1`, [email])
+            .then(userData => {
+                const aUser = new User(
+                    userData.id, 
+                    userData.first_name, 
+                    userData.last_name, 
+                    userData.email, 
+                    userData.password);
+                return aUser;
+            });
+    }
+
     // get all reviews written by this user
     // getReviews() {
     get reviews() {
