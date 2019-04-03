@@ -104,6 +104,19 @@ class User {
         return bcrypt.compareSync(aPassword, this.password);
     }
 
+    static getByEmail(email) {
+        return db.one(`select * from users where email=$1`, [email])
+            .then(userData => {
+                const aUser = new User(
+                    userData.id, 
+                    userData.first_name, 
+                    userData.last_name, 
+                    userData.email, 
+                    userData.password);
+                return aUser;
+            });
+    }
+
     // get all reviews written by this user
     // getReviews() {
     get reviews() {
@@ -125,6 +138,14 @@ class User {
 
                     return arrayOfReviewInstances;
                 });
+    }
+
+    static update(id, userData) {
+        return db.result(`
+            update users
+            set first_name = $1, last_name = $2, email = $3, password = $4
+            where id=$5
+        `, [userData.first_name, userData.last_name, userData.email, userData.password, id])
     }
 
 }
