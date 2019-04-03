@@ -27,7 +27,8 @@ app.set('views', 'views'); // Tell express where to find the view file. The seco
 // HANDLERS ES6 LOGIN
 // When they ask for the login page, send the login form
 app.get('/login', (req, res) => {
-    res.send('This is the login form. ')
+    // res.send('This is the login form. ')
+    res.render('login-form'); // Renders the login-form.html file from the views directory
 });
 
 // Handlers 
