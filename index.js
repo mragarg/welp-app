@@ -2,6 +2,22 @@ const express = require('express'); // Bring in the express library
 const es6Renderer = require('express-es6-template-engine');  // ES6Renderer
 const app = express(); // Create a new express app.
 
+// Require my session and session storage modules
+// This module lets express track users
+// as they go from page to page.
+const session = require('express-session');
+
+// Import the session storage module, and wire it up to 
+// the session module. 
+const FileStore = require('session-file-store')(session);
+
+
+// Tell express to use the sessions
+app.use(session({
+    store: new FileStore(), // No options for now
+    secret: 'fblhfkaljfhlauiaewclrneqwhr'
+}));
+
 
 // FOR POST 
 app.use(express.urlencoded({extended: true }));
@@ -28,19 +44,36 @@ app.set('views', 'views'); // Tell express where to find the view file. The seco
 // When they ask for the login page, send the login form
 app.get('/login', (req, res) => {
     // res.send('This is the login form. ')
-    res.render('login-form'); // Renders the login-form.html file from the views directory
+    res.render('login-form', {
+        locals: {
+            email: ''
+        }
+    }); // Renders the login-form.html file from the views directory
 });
 
 // When they submit the form, process the form data
-app.post('/login', (req, res) => {
-    console.log(req.body);
+app.post('/login', async (req, res) => {
+    console.log(req.body.email);
+    console.log(req.body.password);
     // res.send("test"); 
-    // Assume they typed in correct password
-    res.redirect('/dashboard');
+
     // TODO: check password for real
+    const theUser = await User.getByEmail(req.body.email);
+
+    if(theUser.checkPassword(req.body.password)) {
+        req.session.user = theUser.id;
+        req.session.save(() => {
+            res.redirect('/dashboard');
+        });
+    }
+    else{
+        // Send the form back with the email already filled out.
+
+    }
 });
 
 app.get('/dashboard', (req, res) => {
+    console.log(`The user's id is: ${req.session.user}`);
     res.send('Welcome to your dashboard');
 });
 
@@ -85,3 +118,13 @@ app.delete('/users/:id', async (req, res) => {
     await User.delete(req.params.id);
     res.send("Deleted user " + req.params.id);
 });
+
+
+// setHashPass for login testing
+// async function setHashPass(email) {
+//     const user = await User.getByEmail('puppypower@yahoo.com');
+//     user.setPassword("testPass");
+//     await user.save();
+//     console.log('You set a hash pass');
+// }
+// setHashPass();

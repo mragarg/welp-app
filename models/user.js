@@ -104,7 +104,7 @@ class User {
         return bcrypt.compareSync(aPassword, this.password);
     }
 
-    static getByEMail(email) {
+    static getByEmail(email) {
         return db.one(`select * from users where email=$1`, [email])
             .then(userData => {
                 const aUser = new User(
