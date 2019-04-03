@@ -31,6 +31,12 @@ app.get('/login', (req, res) => {
     res.render('login-form'); // Renders the login-form.html file from the views directory
 });
 
+// When they submit the form, process the form data
+app.post('/login', (req, res) => {
+    console.log(req.body);
+    res.send("test");
+});
+
 // Handlers 
 app.get('/restaurants', async (req, res) => {
     const allRestaurants = await Restaurant.getAll();
