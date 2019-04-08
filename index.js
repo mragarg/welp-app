@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express'); // Bring in the express library
 const es6Renderer = require('express-es6-template-engine');  // ES6Renderer
 const app = express(); // Create a new express app.
@@ -15,7 +17,7 @@ const FileStore = require('session-file-store')(session);
 // Tell express to use the sessions
 app.use(session({
     store: new FileStore(), // No options for now
-    secret: 'fblhfkaljfhlauiaewclrneqwhr'
+    secret: process.end.SESSION_SECRET // DOTENV
 }));
 
 
